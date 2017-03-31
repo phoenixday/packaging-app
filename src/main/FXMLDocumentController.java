@@ -21,7 +21,9 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import java.util.Date;
 import java.util.Iterator;
+import javafx.scene.control.ListView;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.util.converter.BooleanStringConverter;
 import javafx.util.converter.DateStringConverter;
 /**
  *
@@ -34,6 +36,7 @@ public class FXMLDocumentController implements Initializable {
     private String[] types;
     
     private ObservableList<Goods> goodsData = FXCollections.observableArrayList();
+    private ObservableList<Stores> storesData = FXCollections.observableArrayList();
     
     @FXML
     private TableView<Goods> goodsView;
@@ -45,7 +48,7 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Goods, String> nameGood;
     
     @FXML
-    private TableColumn<Goods, Integer> typeGood;
+    private TableColumn<Goods, String> typeGood;
     
     @FXML
     private TableColumn<Goods, Integer> countGood;
@@ -71,14 +74,35 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<Goods, Date> expirationdateGood;
     
+    @FXML
+    private ListView containersList;
+    
+    @FXML 
+    private TableView<Stores> storesView;
+    
+    @FXML
+    private TableColumn<Stores, Integer> idStore;
+    
+    @FXML
+    private TableColumn<Stores, String> addressStore;
+    
+    @FXML
+    private TableColumn<Stores, Integer> sizeStore;
+    
+    @FXML
+    private TableColumn<Stores, Boolean> universalStore;
+    
+    @FXML
+    private TableColumn<Stores, Integer> typesStore;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // goods
         idGood.setCellValueFactory(new PropertyValueFactory<>("idGood"));
         nameGood.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameGood.setCellFactory(TextFieldTableCell.<Goods>forTableColumn());
         typeGood.setCellValueFactory(new PropertyValueFactory<>("type"));
-        typeGood.setCellFactory(TextFieldTableCell.<Goods, Integer>forTableColumn(new IntegerStringConverter()));
+        typeGood.setCellFactory(TextFieldTableCell.<Goods>forTableColumn());
         countGood.setCellValueFactory(new PropertyValueFactory<>("count"));
         countGood.setCellFactory(TextFieldTableCell.<Goods, Integer>forTableColumn(new IntegerStringConverter()));
         idStoreGood.setCellValueFactory(new PropertyValueFactory<>("idStore"));
@@ -95,14 +119,25 @@ public class FXMLDocumentController implements Initializable {
         containertypeGood.setCellFactory(TextFieldTableCell.<Goods, Integer>forTableColumn(new IntegerStringConverter()));
         expirationdateGood.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
         expirationdateGood.setCellFactory(TextFieldTableCell.<Goods, Date>forTableColumn(new DateStringConverter()));
+        //stores
+        idStore.setCellValueFactory(new PropertyValueFactory<>("idStore"));
+        addressStore.setCellValueFactory(new PropertyValueFactory<>("address"));
+        addressStore.setCellFactory(TextFieldTableCell.<Stores>forTableColumn());
+        sizeStore.setCellValueFactory(new PropertyValueFactory<>("size"));
+        sizeStore.setCellFactory(TextFieldTableCell.<Stores, Integer>forTableColumn(new IntegerStringConverter()));
+        universalStore.setCellValueFactory(new PropertyValueFactory<>("universal"));
+        universalStore.setCellFactory(TextFieldTableCell.<Stores, Boolean>forTableColumn(new BooleanStringConverter()));
+        typesStore.setCellValueFactory(new PropertyValueFactory<>("idListoftypes"));
+        typesStore.setCellFactory(TextFieldTableCell.<Stores, Integer>forTableColumn(new IntegerStringConverter()));
         
         initData();
         goodsView.setItems(goodsData);
+        storesView.setItems(storesData);
     }    
     
     public void initData(){
         /*List typesList = d.loadTypesList();
-        types = new String[typesList.size()]; 
+        types = new String[typesList.size() + 1]; 
         int i = 1;
         Iterator<Types> it2 = typesList.iterator();
 	while (it2.hasNext()) types[i++] = it2.next().getType();*/
@@ -110,6 +145,11 @@ public class FXMLDocumentController implements Initializable {
         Iterator<Goods> it = goodsList.iterator();
 	while (it.hasNext()) {
             goodsData.add(it.next());
+        }
+        List storesList = d.loadStoresList();
+        Iterator<Stores> it3 = storesList.iterator();
+	while (it3.hasNext()) {
+            storesData.add(it3.next());
         }
     }
 }
