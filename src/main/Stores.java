@@ -29,11 +29,11 @@ public class Stores {
     public String getAddress(){ return this.address; }
     public int getSize(){ return this.size; }
     public boolean getUniversal(){ return this.universal; }
-    public int getIdListoftypes(){ return this.idListoftypes; }
+    public Integer getIdListoftypes(){ return this.idListoftypes; }
     
     public void setIdStore(int idStore){ this.idStore = idStore; }
     public void setAddress(String address){ this.address = address; }
     public void setSize(int size){ this.size = size; }
     public void setUniversal(boolean universal){ this.universal = universal; }
-    public void setIdListoftypes(int idListoftypes){ this.idListoftypes = idListoftypes; }
+    public void setIdListoftypes(Integer idListoftypes){ this.idListoftypes = idListoftypes; }
 }

@@ -18,16 +18,18 @@ public class Goods {
     private int count;
     private int idStore;
     private double mass;
-    private double width;
-    private double length;
-    private double height;
+    private int width;
+    private int length;
+    private int height;
     private int idContainerType;
     private Date expirationDate;
     private String addFeatures;
+    private String typeName;
+    private String containertypeName;
     
     public Goods(){}
     public Goods(int idGood, String name, int type, int count, int idStore, 
-            double mass, double width, double length, double height, 
+            double mass, int width, int length, int height, 
             int idContainerType, Date expirationDate, String addFeatures){
         this.idGood = idGood;
         this.name = name;
@@ -49,12 +51,14 @@ public class Goods {
     public int getCount(){ return this.count; }
     public int getIdStore(){ return this.idStore; }
     public double getMass(){ return this.mass; }
-    public double getWidth(){ return this.width; }
-    public double getLength(){ return this.length; }
-    public double getHeight(){ return this.height; }
+    public int getWidth(){ return this.width; }
+    public int getLength(){ return this.length; }
+    public int getHeight(){ return this.height; }
     public int getIdContainerType(){ return this.idContainerType; }
     public Date getExpirationDate(){ return this.expirationDate; }
     public String getAddFeatures(){ return this.addFeatures; }
+    public String getTypeName(){ return this.typeName; }
+    public String getContainertypeName(){ return this.containertypeName; }
     
     public void setIdGood(int idGood){ this.idGood = idGood; }
     public void setName(String name){ this.name = name; }
@@ -62,10 +66,12 @@ public class Goods {
     public void setCount(int count){ this.count = count; }
     public void setIdStore(int idStore){ this.idStore = idStore; }
     public void setMass(double mass){ this.mass = mass; }
-    public void setWidth(double width){ this.width = width; }
-    public void setLength(double length){ this.length = length; }
-    public void setHeight(double height){ this.height = height; }
+    public void setWidth(int width){ this.width = width; }
+    public void setLength(int length){ this.length = length; }
+    public void setHeight(int height){ this.height = height; }
     public void setIdContainerType(int idContainerType){ this.idContainerType = idContainerType; }
     public void setExpirationDate(Date expirationDate){ this.expirationDate = expirationDate; }
     public void setaddFeatures(String addFeatures){ this.addFeatures = addFeatures; }
+    public void setTypeName(String typeName){ this.typeName = typeName; }
+    public void setContainertypeName(String containertypeName){ this.containertypeName = containertypeName; }
 }

@@ -51,6 +51,7 @@ Contributor(s):
             <generator class="identity"/>
         </id>
         
+        <property name="idContainer" type="int" column="idContainer"/>
         <property name="idGood" type="int" column="idGood"/>
         <property name="count" type="int" column="count"/>
         

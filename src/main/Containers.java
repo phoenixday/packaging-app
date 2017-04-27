@@ -13,23 +13,22 @@ public class Containers {
     private int idContainer;
     private int idContainertype;
     private boolean free;
-    private Integer idListofgoods;
+    private String containertypeName;
     
     public Containers(){}
-    public Containers(int idContainer, int idContainertype, boolean free, Integer idListofgoods){
+    public Containers(int idContainer, int idContainertype, boolean free){
         this.idContainer = idContainer;
         this.idContainertype = idContainertype;
         this.free = free;
-        this.idListofgoods = idListofgoods;
     }
     
     public int getIdContainer(){ return this.idContainer; }
     public int getIdContainertype(){ return this.idContainertype; }
     public boolean getFree(){ return this.free; }
-    public int getIdListofgoods(){ return this.idListofgoods; }
+    public String getContainertypeName(){ return this.containertypeName; }
     
     public void setIdContainer(int idContainer){ this.idContainer = idContainer; } 
     public void setIdContainertype(int idContainertype){ this.idContainertype = idContainertype; }
     public void setFree(boolean free){ this.free = free; }
-    public void setIdListofgoods(int idListofgoods){ this.idListofgoods = idListofgoods; }
+    public void setContainertypeName(String containertypeName){ this.containertypeName = containertypeName; }
 }

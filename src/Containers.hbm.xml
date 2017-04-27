@@ -52,7 +52,6 @@ Contributor(s):
         
         <property name="idContainertype" type="int" column="idContainertype"/>
         <property name="free" type="boolean" column="free"/>
-        <property name="idListofgoods" type="int" column="idListofgoods"/>
         
     </class>
 </hibernate-mapping>

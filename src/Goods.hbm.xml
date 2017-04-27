@@ -55,9 +55,9 @@ Contributor(s):
         <property name="count" type="int" column="count"/>
         <property name="idStore" type="int" column="idStore"/>
         <property name="mass" type="double" column="mass"/>
-        <property name="width" type="double" column="width"/>
-        <property name="length" type="double" column="length"/>
-        <property name="height" type="double" column="height"/>
+        <property name="width" type="int" column="width"/>
+        <property name="length" type="int" column="length"/>
+        <property name="height" type="int" column="height"/>
         <property name="idContainerType" type="int" column="idContainerType"/>
         <property name="expirationDate" type="date" column="expirationDate"/>
         <property name="addFeatures" type="string" column="addFeatures"/>

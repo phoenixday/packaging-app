@@ -11,21 +11,29 @@ package main;
  */
 public class Listofgoods {
     private int idListofgoods;
+    private int idContainer;
     private int idGood;
     private int count;
+    private String name;
     
     public Listofgoods(){}
-    public Listofgoods(int idListofgoods, int idGood, int count){
+    public Listofgoods(int idListofgoods, int idContainer, int idGood, int count, String name){
         this.idListofgoods = idListofgoods;
+        this.idContainer = idContainer;
         this.idGood = idGood;
         this.count = count;
+        this.name = name;
     }
     
     public int getIdListofgoods(){ return this.idListofgoods; }
+    public int getIdContainer(){ return this.idContainer; }
     public int getIdGood(){ return this.idGood; }
     public int getCount(){ return this.count; }
+    public String getName(){ return this.name; }
     
     public void setIdListofgoods(int idListofgoods){ this.idListofgoods = idListofgoods; }
+    public void setIdContainer(int idContainer){ this.idContainer = idContainer; }
     public void setIdGood(int idGood){ this.idGood = idGood; }
     public void setCount(int count){ this.count = count; }
+    public void setName(String name){ this.name = name; }
 }
