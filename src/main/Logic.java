@@ -122,53 +122,76 @@ public class Logic {
         int number = 0;
         while (number < elements.length){
             int cartI = 0, cartJ = 0, cartK = 0;
+            int h = elements[number].height;
+            int d = elements[number].depth;
+            int w = elements[number].width;
             boolean end = false;
             for (int i = 0; i < contHeight; i++){
                 for (int j = 0; j < contDepth; j++){
                     for (int k = 0; k < contWidth; k++){
                         // if the coordinate is empty
                         if (container[i][j][k] == 0){
-                            boolean fit = true;
-                            // if we place element in this coordinate, does it fit fully?
-                            if (i + elements[number].height > contHeight 
-                                    || j + elements[number].depth > contDepth
-                                    || k + elements[number].width > contWidth){
-                                fit = false;
-                            }
-                            // does it fit in height?
-                            if (fit != false){
-                                for (int t = i; t < i + elements[number].height; t++){ 
-                                    if (container[t][j][k] != 0){
-                                        fit = false;
-                                        break; 
-                                    }
+                            int tmp = 1;
+                            while (tmp <= 6){
+                                switch(tmp){
+                                    case 1:
+                                        elements[number].height = h;
+                                        elements[number].depth = d;
+                                        elements[number].width = w;
+                                        break;
+                                    case 2:
+                                        elements[number].height = h;
+                                        elements[number].depth = w;
+                                        elements[number].width = d;
+                                        break;
+                                    case 3:
+                                        elements[number].height = d;
+                                        elements[number].depth = h;
+                                        elements[number].width = w;
+                                        break;
+                                    case 4:
+                                        elements[number].height = d;
+                                        elements[number].depth = w;
+                                        elements[number].width = h;
+                                        break;
+                                    case 5:
+                                        elements[number].height = w;
+                                        elements[number].depth = h;
+                                        elements[number].width = d;
+                                        break;
+                                    case 6:
+                                        elements[number].height = w;
+                                        elements[number].depth = d;
+                                        elements[number].width = h;
+                                        break;
                                 }
-                            }
-                            // does it fit in depth?
-                            if (fit != false){
-                                for (int t = j; t < j + elements[number].depth; t++){ 
-                                    if (container[i][t][k] != 0){
-                                        fit = false;
-                                        break; 
-                                    }
+                                boolean fit = true;
+                                // if we place element in this coordinate, does it fit fully?
+                                if (i + elements[number].height > contHeight 
+                                        || j + elements[number].depth > contDepth
+                                        || k + elements[number].width > contWidth)
+                                    fit = false;
+                                // does it fit in height?
+                                if (fit != false)
+                                    for (int t = i; t < i + elements[number].height; t++) 
+                                        if (container[t][j][k] != 0){fit = false; break;}
+                                // does it fit in depth?
+                                if (fit != false)
+                                    for (int t = j; t < j + elements[number].depth; t++) 
+                                        if (container[i][t][k] != 0){fit = false; break;}
+                                // does it fit in width?
+                                if (fit != false)
+                                    for (int t = k; t < k + elements[number].width; t++) 
+                                        if (container[i][j][t] != 0){fit = false; break;}
+                                // if it's OK, the coordinate is for this element
+                                if (fit != false) {
+                                    cartI = i;
+                                    cartJ = j;
+                                    cartK = k;
+                                    end = true;
                                 }
-                            }
-                            // does it fit in width?
-                            if (fit != false){
-                                for (int t = k; t < k + elements[number].width; t++){ 
-                                    if (container[i][j][t] != 0){
-                                        fit = false;
-                                        break; 
-                                    }
-                                }
-                            }
-                            // if it's OK, the coordinate is for this element
-                            if (fit != false) {
-                                cartI = i;
-                                cartJ = j;
-                                cartK = k;
-                                end = true;
-                                break; 
+                                if (end) break;
+                                tmp++;
                             }
                         }
                         if (end == true) break;
@@ -179,17 +202,14 @@ public class Logic {
             }
             if (container[cartI][cartJ][cartK] == 0) {
                 //set the coordinate
-                elements[number].y = contHeight / 2 - (cartI + elements[number].height / 2);
+                elements[number].y = contHeight / 2 - (cartI + elements[number].height/ 2);
                 elements[number].z = contDepth / 2 - (cartJ + elements[number].depth / 2);
                 elements[number].x = -(contWidth / 2) + cartK + elements[number].width / 2;
                 // fill the array
-                for (int i = 0; i < elements[number].height; i++){
-                    for (int j = 0; j < elements[number].depth; j++){
-                        for (int k = 0; k < elements[number].width; k++){
+                for (int i = 0; i < elements[number].height; i++)
+                    for (int j = 0; j < elements[number].depth; j++)
+                        for (int k = 0; k < elements[number].width; k++)
                             container[cartI + i][cartJ + j][cartK + k] = number + 1;
-                        }
-                    }
-                }
             }
             number++; 
         }
@@ -218,9 +238,6 @@ public class Logic {
                     case "серый": box.setMaterial(new PhongMaterial(Color.GRAY)); break;
                     case "черный": box.setMaterial(new PhongMaterial(Color.BLACK)); break;
                 }
-                //box.setScaleX(0.05);
-                //box.setScaleY(0.05);
-                //box.setScaleZ(0.05);
                 box.setTranslateX(elements[i].x);
                 box.setTranslateY(elements[i].y);
                 box.setTranslateZ(elements[i].z);

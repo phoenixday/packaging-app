@@ -26,6 +26,8 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import java.util.Date;
 import java.util.Iterator;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -94,6 +96,12 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private TableColumn<Goods, Date> expirationdateGood;
+    
+    @FXML
+    private TextField searchField;
+    
+    @FXML
+    private Button addGood, deleteGood, exportGoods;
     
     @FXML
     private ChoiceBox containertypescombo;
@@ -277,7 +285,31 @@ public class FXMLDocumentController implements Initializable {
             "черный"
         );
         colour.setValue("красный");
-    }    
+ 
+        FilteredList<Goods> filteredData = new FilteredList<>(goodsData);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(good -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    addGood.setVisible(true);
+                    deleteGood.setVisible(true);
+                    exportGoods.setVisible(true);
+                    return true;
+                }
+                addGood.setVisible(false);
+                deleteGood.setVisible(false);
+                exportGoods.setVisible(false);
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (good.getName().toLowerCase().contains(lowerCaseFilter))
+                    return true;
+                else if (good.getTypeName().toLowerCase().contains(lowerCaseFilter))
+                    return true;
+                return false;
+            });
+        });
+        SortedList<Goods> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(goodsView.comparatorProperty());
+        goodsView.setItems(sortedData);
+    }
     
     public void initData(){
         List typesList = d.loadTypesList();

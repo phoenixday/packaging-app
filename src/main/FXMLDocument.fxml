@@ -47,20 +47,19 @@
                                                    <right>
                                                       <VBox prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
                                                          <children>
-                                                            <TextField promptText="Введите товар" />
-                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Найти" />
+                                                            <TextField fx:id="searchField" promptText="Найти" />
                                                             <TextArea disable="true" editable="false" maxHeight="-Infinity" opacity="0.0" prefHeight="80.0" prefWidth="200.0" promptText="Дополнительная характеристика">
                                                                <VBox.margin>
                                                                   <Insets bottom="30.0" top="10.0" />
                                                                </VBox.margin>
                                                             </TextArea>
-                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addGood" text="Добавить">
+                                                            <Button fx:id="addGood" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addGood" text="Добавить">
                                                                <VBox.margin>
                                                                   <Insets />
                                                                </VBox.margin>
                                                             </Button>
                                                             <Button fx:id="deleteGood" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteGood" text="Удалить" />
-                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportGoods" text="Экспорт в Excel" />
+                                                            <Button fx:id="exportGoods" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportGoods" text="Экспорт в Excel" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="5.0" />
