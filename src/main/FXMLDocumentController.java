@@ -10,10 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -30,8 +26,6 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
@@ -50,6 +44,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
@@ -150,7 +145,7 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Stores, Boolean> universalStore;
     
     @FXML
-    private TableColumn<Stores, Integer> typesStore;
+    private VBox specialisations;
     
     @FXML
     private TableView<Goods> goodsView3;
@@ -282,13 +277,26 @@ public class FXMLDocumentController implements Initializable {
                 checkBox.selectedProperty().setValue(s.getUniversal());
                 checkBox.selectedProperty().addListener((ov, old_val, new_val) -> {
                     s.setUniversal(new_val);
+                    /*if (new_val) specialisations.setVisible(false);
+                    else {
+                        specialisations.setVisible(true);
+                        List typesList = d.loadTypesList();
+                        Iterator it = typesList.iterator();
+                        while (it.hasNext()) {
+                            CheckBox cb = new CheckBox();
+                            List tmpList = d.loadStoreTypesList(s.getIdStore());
+                            cb.setText(it.next().toString());
+                            cb.selectedProperty().addListener((ov2, old_val2, new_val2) -> {
+                                if 
+                            });
+                        }
+                    }*/
+                    System.out.println(s.getIdStore());
                     d.updateStore(s);
                 });
                 return new SimpleObjectProperty(checkBox);
             }      
         });
-        typesStore.setCellValueFactory(new  PropertyValueFactory<>("idListoftypes"));
-        typesStore.setCellFactory(TextFieldTableCell.<Stores, Integer>forTableColumn(new IntegerStringConverter()));
         //goods2
         idGood2.setCellValueFactory(new PropertyValueFactory<>("idGood"));
         nameGood2.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -819,12 +827,4 @@ public class FXMLDocumentController implements Initializable {
         text.setText(link3.getText() + "\n\n");
         text.appendText("Контейнер — основная единица перевозки или хранения, используемая в транспортной логистике. Контейнеры изготавливают из различных материалов и форм, однако наибольшее распространение получили универсальные контейнеры.");
     }
-    /*
-    public void brbr(){
-        for(int i = 0; i < storesData.size(); i++){
-            //((Stores)storesData.get(i)).setUniversal(Boolean.valueOf(storesView.getColumns().get(3).getCellObservableValue(i).getValue().toString()));
-            //d.updateStore((Stores)storesData.get(i));
-            System.out.println(storesView.getColumns().get(3).getCellObservableValue(i).getValue().toString());
-        }    
-    }*/
 }

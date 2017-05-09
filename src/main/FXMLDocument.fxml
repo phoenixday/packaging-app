@@ -135,18 +135,17 @@
                                              <children>
                                                 <BorderPane prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <center>
-                                                      <TableView fx:id="storesView" editable="true" onMousePressed="#add2" prefHeight="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                                      <TableView fx:id="storesView" editable="true" onMousePressed="#add2" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
                                                         <columns>
                                                           <TableColumn fx:id="idStore" prefWidth="42.0" text="№" />
                                                           <TableColumn fx:id="addressStore" onEditCommit="#changeStore" prefWidth="100.0" text="Адрес" />
                                                             <TableColumn fx:id="sizeStore" onEditCommit="#changeStore" prefWidth="101.0" text="Размер (м2)" />
                                                             <TableColumn fx:id="universalStore" onEditCommit="#changeStore" prefWidth="75.0" text="Универсальный" />
-                                                            <TableColumn fx:id="typesStore" prefWidth="149.0" text="Специализации" />
                                                         </columns>
                                                       </TableView>
                                                    </center>
-                                                   <right>
-                                                      <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                   <left>
+                                                      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
                                                          <children>
                                                             <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addStore" text="Добавить">
                                                                <VBox.margin>
@@ -156,6 +155,13 @@
                                                             <Button fx:id="deleteStore" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteStore" text="Удалить" />
                                                             <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportStores" text="Экспорт в Excel" />
                                                          </children>
+                                                         <padding>
+                                                            <Insets right="5.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                   </left>
+                                                   <right>
+                                                      <VBox fx:id="specialisations" prefHeight="200.0" prefWidth="150.0" spacing="5.0" visible="false" BorderPane.alignment="CENTER">
                                                          <padding>
                                                             <Insets left="5.0" />
                                                          </padding>

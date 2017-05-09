@@ -59,6 +59,14 @@ public class Data implements AutoCloseable{
         return query.list();
     }
     
+    public List loadStoreTypesList(int idStore){
+        session.beginTransaction();
+        Query query = session.createQuery("SELECT t.type FROM Listoftypes l join Types t WHERE l.idStore = :idStore");
+        query.setParameter("l.idStore", idStore);
+        session.getTransaction().commit();
+        return query.list();
+    }
+    
     public List loadContainertypesList(){
         session.beginTransaction();
         Query query = session.createQuery("SELECT c.containertype FROM Containertype c");
