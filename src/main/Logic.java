@@ -41,7 +41,7 @@ public class Logic {
     int contHeight = 300;
     int contDepth = 300;
     int contWidth = 300;
-    int[][][] container = new int[300][300][300];
+    int[][][] container = new int[contHeight][contDepth][contWidth];
     
     public void start(List list){
         int tmp = 0;
@@ -64,10 +64,6 @@ public class Logic {
         }
         setVariants();
         sort();
-        /*for (Element element : elements){
-            int volume = element.width * element.height * element.depth;
-            System.out.println(element.width + "x" + element.height + "x" + element.depth + ": " + volume + ", " + element.variants);
-        }*/
         pack();
     }
     
@@ -106,13 +102,18 @@ public class Logic {
                     elements[i + 1] = tmp;
                     swapped = true;
                 }
-                if (volume1 == volume2) {
+                if (volume1 == volume2)
                     if (elements[i].variants > elements[i + 1].variants){
                         tmp = elements[i];
                         elements[i] = elements[i + 1];
                         elements[i + 1] = tmp;
                         swapped = true;
                     }
+                if (elements[i].mass > elements[i + 1].mass){
+                    tmp = elements[i];
+                    elements[i] = elements[i + 1];
+                    elements[i + 1] = tmp;
+                    swapped = true;
                 }
             }
         }

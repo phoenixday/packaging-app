@@ -26,11 +26,11 @@
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <BorderPane layoutX="14.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="28.80000000000001" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.799999999999955" AnchorPane.topAnchor="0.0">
                                                    <center>
                                                       <TableView fx:id="goodsView" editable="true" focusTraversable="false" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
                                                          <columns>
-                                                            <TableColumn fx:id="idGood" prefWidth="48.0" text="№" />
+                                                            <TableColumn fx:id="idGood" editable="false" prefWidth="48.0" text="№" visible="false" />
                                                             <TableColumn fx:id="nameGood" onEditCommit="#changeGood" prefWidth="240.0" text="Наименование" />
                                                             <TableColumn fx:id="typeGood" onEditCommit="#changeGood" prefWidth="177.0" text="Тип" />
                                                             <TableColumn fx:id="countGood" onEditCommit="#changeGood" prefWidth="78.0" text="Количество" />
@@ -42,6 +42,9 @@
                                                             <TableColumn fx:id="containertypeGood" onEditCommit="#changeGood" prefWidth="117.0" text="Тип контейнера" />
                                                             <TableColumn fx:id="expirationdateGood" onEditCommit="#changeGood" prefWidth="102.0" text="Срок годности" />
                                                          </columns>
+                                                         <columnResizePolicy>
+                                                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                         </columnResizePolicy>
                                                       </TableView>
                                                    </center>
                                                    <right>
@@ -132,7 +135,7 @@
                                              <children>
                                                 <BorderPane prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <center>
-                                                      <TableView fx:id="storesView" editable="true" prefHeight="200.0" BorderPane.alignment="CENTER">
+                                                      <TableView fx:id="storesView" editable="true" onMousePressed="#add2" prefHeight="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
                                                         <columns>
                                                           <TableColumn fx:id="idStore" prefWidth="42.0" text="№" />
                                                           <TableColumn fx:id="addressStore" onEditCommit="#changeStore" prefWidth="100.0" text="Адрес" />
@@ -276,7 +279,7 @@
                                     </GridPane>
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0">
+                            <AnchorPane fx:id="drawPane" minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0" visible="false">
                                  <children>
                                     <BorderPane prefHeight="1000.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
@@ -318,13 +321,33 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="33.0" layoutY="34.0" mnemonicParsing="false" onAction="#exportAll" text="Экспорт таблиц в Excel" />
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <left>
+                              <VBox maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Hyperlink fx:id="link1" onAction="#setText" text="О программе" />
+                                    <Hyperlink fx:id="link2" onAction="#setText2" text="Типы товаров" />
+                                    <Hyperlink fx:id="link3" onAction="#setText3" text="Контейнеры" />
+                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exportAll" text="Экспорт таблиц в Excel">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </left>
+                           <center>
+                              <TextArea fx:id="text" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" />
+                                 </BorderPane.margin>
+                              </TextArea>
+                           </center>
+                        </BorderPane>
                      </children></AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="Настройки">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
         </tabs>

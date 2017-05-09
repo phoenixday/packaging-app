@@ -10,6 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -26,6 +30,10 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.Group;
@@ -33,14 +41,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
-import javafx.util.converter.BooleanStringConverter;
-import javafx.util.converter.DateStringConverter;
+import javafx.util.Callback;
 import javax.swing.JFileChooser;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -200,6 +213,9 @@ public class FXMLDocumentController implements Initializable {
     private Button add2, delete2;
     
     @FXML
+    private AnchorPane drawPane;
+    
+    @FXML
     private Group group;
     
     @FXML
@@ -207,6 +223,12 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Slider sliderX, sliderY;
+    
+    @FXML
+    private Hyperlink link1, link2, link3; 
+    
+    @FXML
+    private TextArea text;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -230,17 +252,42 @@ public class FXMLDocumentController implements Initializable {
         heightGood.setCellFactory(TextFieldTableCell.<Goods, Integer>forTableColumn(new IntegerStringConverter()));
         containertypeGood.setCellValueFactory(new PropertyValueFactory<>("containertypeName"));
         containertypeGood.setCellFactory(ComboBoxTableCell.forTableColumn(containertypes));
-        expirationdateGood.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
-        expirationdateGood.setCellFactory(TextFieldTableCell.<Goods, Date>forTableColumn(new DateStringConverter()));
+        expirationdateGood.setCellValueFactory(
+            new Callback<CellDataFeatures<Goods, Date>, ObservableValue<Date>>(){
+            @Override
+            public ObservableValue<Date> call(CellDataFeatures<Goods, Date> param){
+                Goods g = param.getValue();
+                DatePicker datePicker = new DatePicker();
+                if (g.getExpirationDate() != null)
+                    datePicker.setValue((g.getExpirationDate()).toLocalDate());
+                datePicker.valueProperty().addListener((ov, old_val, new_val) -> {
+                    g.setExpirationDate(java.sql.Date.valueOf(new_val));
+                    d.updateGood(g);
+                });
+                return new SimpleObjectProperty(datePicker);
+            }      
+        });
         //stores
         idStore.setCellValueFactory(new PropertyValueFactory<>("idStore"));
         addressStore.setCellValueFactory(new PropertyValueFactory<>("address"));
         addressStore.setCellFactory(TextFieldTableCell.<Stores>forTableColumn());
         sizeStore.setCellValueFactory(new PropertyValueFactory<>("size"));
         sizeStore.setCellFactory(ComboBoxTableCell.forTableColumn(sizes));
-        universalStore.setCellValueFactory(new PropertyValueFactory<>("universal"));
-        universalStore.setCellFactory(TextFieldTableCell.<Stores, Boolean>forTableColumn(new BooleanStringConverter()));
-        typesStore.setCellValueFactory(new PropertyValueFactory<>("idListoftypes"));
+        universalStore.setCellValueFactory(
+            new Callback<CellDataFeatures<Stores, Boolean>, ObservableValue<Boolean>>(){
+            @Override
+            public ObservableValue<Boolean> call(CellDataFeatures<Stores, Boolean> param){
+                Stores s = param.getValue();
+                CheckBox checkBox = new CheckBox();
+                checkBox.selectedProperty().setValue(s.getUniversal());
+                checkBox.selectedProperty().addListener((ov, old_val, new_val) -> {
+                    s.setUniversal(new_val);
+                    d.updateStore(s);
+                });
+                return new SimpleObjectProperty(checkBox);
+            }      
+        });
+        typesStore.setCellValueFactory(new  PropertyValueFactory<>("idListoftypes"));
         typesStore.setCellFactory(TextFieldTableCell.<Stores, Integer>forTableColumn(new IntegerStringConverter()));
         //goods2
         idGood2.setCellValueFactory(new PropertyValueFactory<>("idGood"));
@@ -265,7 +312,6 @@ public class FXMLDocumentController implements Initializable {
         containertypescombo.getItems().addAll(containertypes);
         containertypescombo.setValue(containertypes.get(0));
         storesView.setItems(storesData);
-        
         colour.getItems().addAll(
             "красный",
             "оранжевый",
@@ -285,7 +331,7 @@ public class FXMLDocumentController implements Initializable {
             "черный"
         );
         colour.setValue("красный");
- 
+        //search
         FilteredList<Goods> filteredData = new FilteredList<>(goodsData);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(good -> {
@@ -370,7 +416,7 @@ public class FXMLDocumentController implements Initializable {
         int selectedIndex = goodsView.getSelectionModel().getSelectedIndex();
         if (selectedIndex == -1) return;
         d.deleteGood(goodsData.get(selectedIndex).getIdGood());
-        goodsView.getItems().remove(selectedIndex);
+        goodsData.remove(selectedIndex);
     }
     
     public void deleteContainer(){
@@ -384,14 +430,19 @@ public class FXMLDocumentController implements Initializable {
         int selectedIndex = storesView.getSelectionModel().getSelectedIndex();
         if (selectedIndex == -1) return;
         d.deleteStore(storesData.get(selectedIndex).getIdStore());
-        storesView.getItems().remove(selectedIndex);
+        storesData.remove(selectedIndex);
     }
     
     public void changeGood(CellEditEvent t){
         int column = t.getTableView().getEditingCell().getColumn();
         switch(column){
             case 1: 
-                ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue().toString());
+                if (t.getNewValue().toString().length() < 45)
+                    ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue().toString());
+                else {
+                    AlertBox.display("Ошибка!", "Название не должно превышать 45 символов.");
+                    goodsData.set(t.getTablePosition().getRow(), (Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                }
                 break;
             case 2:
                 ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setTypeName(t.getNewValue().toString());
@@ -402,28 +453,48 @@ public class FXMLDocumentController implements Initializable {
                     }    
                 break;
             case 3: 
-                if ((int) t.getNewValue() >= 0)
+                if ((int) t.getNewValue() > 0)
                     ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setCount((int) t.getNewValue());
+                else {
+                    AlertBox.display("Ошибка!", "Количество должно быть большим, чем 0.");
+                    goodsData.set(t.getTablePosition().getRow(), (Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                }
                 break;
             case 4: 
                 if ((int) t.getNewValue() >= 0)
                     ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdStore((int) t.getNewValue());
                 break;
             case 5: 
-                if ((double) t.getNewValue() >= 0)
+                if ((double) t.getNewValue() > 0)
                     ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setMass((double) t.getNewValue());
+                else {
+                    AlertBox.display("Ошибка!", "Масса должна быть большей, чем 0.");
+                    goodsData.set(t.getTablePosition().getRow(), (Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                }
                 break;
             case 6: 
-                if ((double) t.getNewValue() >= 0)
+                if ((int) t.getNewValue() > 0)
                     ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setWidth((int) t.getNewValue());
+                else {
+                    AlertBox.display("Ошибка!", "Ширина должна быть большей, чем 0.");
+                    goodsData.set(t.getTablePosition().getRow(), (Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                }
                 break;
             case 7: 
-                if ((double) t.getNewValue() >= 0)
+                if ((int) t.getNewValue() > 0)
                     ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setLength((int) t.getNewValue());
+                else {
+                    AlertBox.display("Ошибка!", "Длина должна быть большей, чем 0.");
+                    goodsData.set(t.getTablePosition().getRow(), (Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                }
                 break;
             case 8: 
-                if ((double) t.getNewValue() >= 0)
+                if ((int) t.getNewValue() > 0)
                     ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setHeight((int) t.getNewValue());
+                else {
+                    AlertBox.display("Ошибка!", "Высота должна быть большей, чем 0.");
+                    goodsData.set(t.getTablePosition().getRow(), (Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                }
                 break;
             case 9: 
                 ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setContainertypeName(t.getNewValue().toString());
@@ -433,9 +504,6 @@ public class FXMLDocumentController implements Initializable {
                         break;
                     }
                 break;
-            case 10:
-                ((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow())).setExpirationDate((Date) t.getNewValue());
-        
         }
         d.updateGood((Goods)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     }
@@ -448,10 +516,6 @@ public class FXMLDocumentController implements Initializable {
                 break;
             case 2:
                 ((Stores)t.getTableView().getItems().get(t.getTablePosition().getRow())).setSize((int) t.getNewValue());    
-                break;
-            case 3: 
-                //if ((int) t.getNewValue() >= 0)
-                ((Stores)t.getTableView().getItems().get(t.getTablePosition().getRow())).setUniversal((boolean) t.getNewValue());
                 break;
         }
         d.updateStore((Stores)t.getTableView().getItems().get(t.getTablePosition().getRow()));
@@ -629,6 +693,138 @@ public class FXMLDocumentController implements Initializable {
     public void calculate(){
         Logic logic = new Logic();
         logic.start(goodsList.getItems());
+        drawPane.setVisible(true);
+        group.getChildren().clear();
+        Box box = new Box(300, 300, 300);
+        box.setDrawMode(DrawMode.LINE);
+        group.getChildren().add(box);
         group.getChildren().addAll(Arrays.asList(logic.draw()));
     }
+    
+    public void setText(){
+        link1.setVisited(true);
+        text.setText(link1.getText() + "\n\n");
+        text.appendText("Программа SimplePack помогает расчитать погрузку контейнеров и вести складской учет." + "\n" + "Чтобы посмотреть товары на складе, зайдите в пункт меню \"Склад\". Для загрузки контейнера зайдите в пункт меню \"Упаковка\".");
+    }
+    
+    public void setText2(){
+        link2.setVisited(true);
+        text.setText(link2.getText() + "\n");
+        text.appendText("Подробнее: http://www.mktu.info/goods/" + "\n\n");
+        text.appendText("Класс 1\n" +
+"Химические продукты, предназначенные для использования в промышленных, научных целях, в фотографии, сельском хозяйстве, садоводстве и лесоводстве; необработанные синтетические смолы, необработанные пластические материалы; удобрения; составы для тушения огня; препараты для закалки и пайки металлов; препараты для консервирования пищевых продуктов; дубильные вещества; клеящие вещества для промышленных целей.\n" +
+"\n" +
+"Класс 2\n" +
+"Краски, олифы, лаки; защитные средства, предохраняющие металлы от коррозии и древесину от разрушения; красящие вещества; протравы; необработанные природные смолы; листовые и порошкообразные металлы, используемые для художественно-декоративных целей и художественной печати.\n" +
+"\n" +
+"Класс 3\n" +
+"Препараты для отбеливания и прочие вещества для стирки; препараты для чистки, полирования, обезжиривания и абразивной обработки; мыла; парфюмерные изделия, эфирные масла, косметика, лосьоны для волос; зубные порошки и пасты.\n" +
+"\n" +
+"Класс 4\n" +
+"Технические масла и смазки; смазочные материалы; составы для поглощения, смачивания и связывания пыли; топлива (в том числе моторные бензины) и осветительные материалы; фитили и свечи для освещения.\n" +
+"\n" +
+"Класс 5\n" +
+"Фармацевтические и ветеринарные препараты; гигиенические препараты для медицинских целей; диетические вещества для медицинских целей, детское питание; пластыри, перевязочные материалы; материалы для пломбирования зубов и изготовления зубных слепков; дезинфицирующие средства; препараты для уничтожения вредных животных; фунгициды, гербициды.\n" +
+"\n" +
+"Класс 6\n" +
+"Обычные металлы и их сплавы; металлические строительные материалы; передвижные металлические конструкции и сооружения; металлические материалы для рельсовых путей; металлические тросы и проволока [неэлектрические]; скобяные и замочные изделия; металлические трубы; сейфы; изделия из обычных металлов, не относящиеся к другим классам; руды.\n" +
+"\n" +
+"Класс 7\n" +
+"Машины и станки; двигатели (за исключением предназначенных для наземных транспортных средств); соединения и элементы передач (за исключением предназначенных для наземных транспортных средств); сельскохозяйственные орудия, иные, чем орудия с ручным управлением; инкубаторы.\n" +
+"\n" +
+"Класс 8\n" +
+"Ручные орудия и инструменты; ножевые изделия, вилки и ложки; холодное оружие; бритвы.\n" +
+"\n" +
+"Класс 9\n" +
+"Приборы и инструменты научные, морские, геодезические, фотографические, кинематографические, оптические, для взвешивания, измерения, сигнализации, контроля (проверки), спасания и обучения; приборы и инструменты для передачи, распределения, трансформации, накопления, регулирования или управления электричеством; аппаратура для записи, передачи, воспроизведения звука или изображений; магнитные носители информации, диски звукозаписи; торговые автоматы и механизмы для аппаратов с предварительной оплатой; кассовые аппараты, счетные машины, оборудование для обработки информации и компьютеры; оборудование для тушения огня.\n" +
+"\n" +
+"Класс 10\n" +
+"Приборы и инструменты хирургические, медицинские, стоматологические и ветеринарные; протезы конечностей, глазные и зубные протезы; ортопедические изделия; материалы для наложения швов.\n" +
+"\n" +
+"Класс 11\n" +
+"Устройства для освещения, нагрева, получения пара, тепловой обработки пищевых продуктов, для охлаждения, сушки, вентиляции, водораспределительные и санитарно-технические.\n" +
+"\n" +
+"Класс 12\n" +
+"Транспортные средства; аппараты, перемещающиеся по земле, воде и воздуху.\n" +
+"\n" +
+"Класс 13\n" +
+"Огнестрельное оружие; боеприпасы и снаряды; взрывчатые вещества; фейерверки.\n" +
+"\n" +
+"Класс 14\n" +
+"Благородные металлы и их сплавы, изделия или покрытия из них, не относящиеся к другим классам; ювелирные изделия, бижутерия, драгоценные камни; часы и прочие хронометрические приборы.\n" +
+"\n" +
+"Класс 15\n" +
+"Музыкальные инструменты.\n" +
+"\n" +
+"Класс 16\n" +
+"Бумага, картон и изделия из них, не относящиеся к другим классам; печатная продукция; материалы для переплетных работ; фотоснимки; писчебумажные товары; клейкие вещества для канцелярских и бытовых целей; принадлежности для художников; кисти; пишущие машины и конторские принадлежности (за исключением мебели); учебные материалы и наглядные пособия (за исключением аппаратуры); пластмассовые материалы для упаковки (не относящиеся к другим классам); шрифты; клише типографские.\n" +
+"\n" +
+"Класс 17\n" +
+"Каучук, резина, гуттаперча, асбест, слюда и изделия из этих материалов, не относящиеся к другим классам; изделия из частично обработанных пластмасс; материалы для конопачения, уплотнения и изоляции; неметаллические гибкие трубы.\n" +
+"\n" +
+"Класс 18\n" +
+"Кожа и имитация кожи, изделия из них, не относящиеся к другим классам; шкуры животных; дорожные сундуки, чемоданы; зонты от дождя и солнца, трости; хлысты, кнуты, конская сбруя и шорные изделия.\n" +
+"\n" +
+"Класс 19\n" +
+"Неметаллические строительные материалы; неметаллические жесткие трубы для строительных целей; асфальт, смолы и битум; неметаллические передвижные конструкции и сооружения; неметаллические памятники.\n" +
+"\n" +
+"Класс 20\n" +
+"Мебель, зеркала, обрамления для картин и тому подобное; изделия, не относящиеся к другим классам, из дерева, пробки, камыша, тростника, ивы, рога, кости, слоновой кости, китового уса, панциря черепах, раковин, янтаря, перламутра, морской пенки, из заменителей этих материалов или из пластмасс.\n" +
+"\n" +
+"Класс 21\n" +
+"Домашняя или кухонная утварь и посуда; расчески и губки; щетки (за исключением кистей); материалы для щеточных изделий; приспособления для чистки и уборки; мочалки металлические; необработанное или частично обработанное стекло (за исключением строительного стекла); изделия из стекла, фарфора и фаянса, не относящиеся к другим классам.\n" +
+"\n" +
+"Класс 22\n" +
+"Канаты, веревки, бечевки, сети, палатки, навесы, брезент, паруса и мешки, не относящиеся к другим классам; набивочные материалы (за исключением из резиновых и пластических материалов); текстильное волокнистое сырье.\n" +
+"\n" +
+"Класс 23\n" +
+"Нити текстильные и пряжа.\n" +
+"\n" +
+"Класс 24\n" +
+"Ткани и текстильные изделия, не относящиеся к другим классам; одеяла, покрывала и скатерти.\n" +
+"\n" +
+"Класс 25\n" +
+"Одежда, обувь, головные уборы.\n" +
+"\n" +
+"Класс 26\n" +
+"Кружева и вышитые изделия, тесьма и ленты; пуговицы, кнопки, крючки и блочки, булавки и иглы; искусственные цветы.\n" +
+"\n" +
+"Класс 27\n" +
+"Ковры, циновки, маты, линолеум и прочие покрытия для полов; стенные обои и обивочные материалы, нетекстильные.\n" +
+"\n" +
+"Класс 28\n" +
+"Игры, игрушки; гимнастические и спортивные товары, не относящиеся к другим классам; елочные украшения.\n" +
+"\n" +
+"Класс 29\n" +
+"Мясо, рыба, птица и дичь; мясные экстракты; овощи и фрукты консервированные, сушеные и подвергнутые тепловой обработке; желе, варенье, компоты; яйца, молоко и молочные продукты; масла и жиры пищевые.\n" +
+"\n" +
+"Класс 30\n" +
+"Кофе, чай, какао, сахар, рис, тапиока (маниока), саго, заменители кофе; мука и зерновые продукты, хлебобулочные изделия, кондитерские изделия, мороженое; мед, сироп из патоки; дрожжи, пекарные порошки; соль, горчица; уксус, приправы; пряности; пищевой лед.\n" +
+"\n" +
+"Класс 31\n" +
+"Сельскохозяйственные, садово-огородные, лесные и зерновые продукты, не относящиеся к другим классам; живые животные; свежие фрукты и овощи; семена, живые растения и цветы; корма для животных; солод.\n" +
+"\n" +
+"Класс 32\n" +
+"Пиво; минеральные и газированные воды и прочие безалкогольные напитки; фруктовые напитки и фруктовые соки; сиропы и прочие составы для изготовления напитков.\n" +
+"\n" +
+"Класс 33\n" +
+"Алкогольные напитки (за исключением пива).\n" +
+"\n" +
+"Класс 34\n" +
+"Табак; курительные принадлежности; спички.");
+    }
+    
+    public void setText3(){
+        link3.setVisited(true);
+        text.setText(link3.getText() + "\n\n");
+        text.appendText("Контейнер — основная единица перевозки или хранения, используемая в транспортной логистике. Контейнеры изготавливают из различных материалов и форм, однако наибольшее распространение получили универсальные контейнеры.");
+    }
+    /*
+    public void brbr(){
+        for(int i = 0; i < storesData.size(); i++){
+            //((Stores)storesData.get(i)).setUniversal(Boolean.valueOf(storesView.getColumns().get(3).getCellObservableValue(i).getValue().toString()));
+            //d.updateStore((Stores)storesData.get(i));
+            System.out.println(storesView.getColumns().get(3).getCellObservableValue(i).getValue().toString());
+        }    
+    }*/
 }

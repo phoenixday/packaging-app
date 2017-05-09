@@ -5,7 +5,7 @@
  */
 package main;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -71,7 +71,7 @@ public class Goods {
     public void setHeight(int height){ this.height = height; }
     public void setIdContainerType(int idContainerType){ this.idContainerType = idContainerType; }
     public void setExpirationDate(Date expirationDate){ this.expirationDate = expirationDate; }
-    public void setaddFeatures(String addFeatures){ this.addFeatures = addFeatures; }
+    public void setAddFeatures(String addFeatures){ this.addFeatures = addFeatures; }
     public void setTypeName(String typeName){ this.typeName = typeName; }
     public void setContainertypeName(String containertypeName){ this.containertypeName = containertypeName; }
 }
