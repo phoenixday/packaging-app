@@ -25,6 +25,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -379,13 +380,17 @@ public class FXMLDocumentController implements Initializable {
             return observable ;
         }
         }));
-        initCharts();
     }
     
     public void initData(){
+        HashMap <String, Integer> h = new HashMap();
         List typesList = d.loadTypesList();
         Iterator it3 = typesList.iterator();
-	while (it3.hasNext()) types.add(it3.next());
+	while (it3.hasNext()) {
+            Object tmp = it3.next();
+            types.add(tmp);
+            h.put(tmp.toString(), 0);
+        }
         List containertypesList = d.loadContainertypesList();
         Iterator it4 = containertypesList.iterator();
 	while (it4.hasNext()) containertypes.add(it4.next());
@@ -394,26 +399,45 @@ public class FXMLDocumentController implements Initializable {
 	while (it.hasNext()) {
             Goods tmp = it.next();
             tmp.setTypeName(types.get(tmp.getType()).toString());
+            int r = h.get(types.get(tmp.getType()).toString());
+            h.put(types.get(tmp.getType()).toString(), r++);
             tmp.setContainertypeName(containertypes.get(tmp.getIdContainerType()).toString());
             goodsData.add(tmp);
             gD.add(tmp);
         }
+        initBarChart(h);
         List storesList = d.loadStoresList();
         Iterator<Stores> it2 = storesList.iterator();
 	while (it2.hasNext()) storesData.add(it2.next());
         List containersListt = d.loadContainersList();
         Iterator<Containers> it5 = containersListt.iterator();
+        int free = 0, full = 0;
 	while (it5.hasNext()) {
             Containers tmp = it5.next();
             tmp.setContainertypeName(containertypes.get(tmp.getIdContainertype() - 1).toString());
             String s = tmp.getIdContainer() + "-ый, " + tmp.getContainertypeName();
-            if (tmp.getFree() == true) s += ", свободный";
+            if (tmp.getFree() == true) {
+                s += ", свободный";
+                free++;
+            } else full++;
+            initPieChart(free, full);
             containersList.getItems().add(s);
         }
     }
     
-    public void initCharts(){
-        
+    public void initPieChart(int free, int full){
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Свободные", free),
+                new PieChart.Data("Занятые", full));
+        pieChart.setData(pieChartData);
+    }
+    
+    public void initBarChart(HashMap map){
+        ObservableList<BarChart.Data> barChartData = FXCollections.observableArrayList();
+        //barChartData.addAll(map);
+        for (int i = 0; i < map.size(); i++){
+          //  barChartData.add(map.get(i));
+        }
     }
     
     public void addGood(){

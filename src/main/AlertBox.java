@@ -22,8 +22,7 @@ public class AlertBox {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(250);
-        Label label = new Label(message);
-        BorderPane layout = new BorderPane(label);
+        BorderPane layout = new BorderPane(new Label(message));
         layout.setPadding(new Insets(40, 40, 40, 40));
         Scene scene = new Scene(layout);
         window.setScene(scene);
