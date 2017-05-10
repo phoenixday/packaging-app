@@ -26,11 +26,15 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import java.util.Date;
 import java.util.Iterator;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.Group;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -42,9 +46,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
@@ -145,7 +149,7 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Stores, Boolean> universalStore;
     
     @FXML
-    private VBox specialisations;
+    private ListView specialisations;
     
     @FXML
     private TableView<Goods> goodsView3;
@@ -225,6 +229,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea text;
     
+    @FXML
+    private PieChart pieChart;
+    
+    @FXML
+    private BarChart barChart;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // goods
@@ -277,21 +287,6 @@ public class FXMLDocumentController implements Initializable {
                 checkBox.selectedProperty().setValue(s.getUniversal());
                 checkBox.selectedProperty().addListener((ov, old_val, new_val) -> {
                     s.setUniversal(new_val);
-                    /*if (new_val) specialisations.setVisible(false);
-                    else {
-                        specialisations.setVisible(true);
-                        List typesList = d.loadTypesList();
-                        Iterator it = typesList.iterator();
-                        while (it.hasNext()) {
-                            CheckBox cb = new CheckBox();
-                            List tmpList = d.loadStoreTypesList(s.getIdStore());
-                            cb.setText(it.next().toString());
-                            cb.selectedProperty().addListener((ov2, old_val2, new_val2) -> {
-                                if 
-                            });
-                        }
-                    }*/
-                    System.out.println(s.getIdStore());
                     d.updateStore(s);
                 });
                 return new SimpleObjectProperty(checkBox);
@@ -363,6 +358,28 @@ public class FXMLDocumentController implements Initializable {
         SortedList<Goods> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(goodsView.comparatorProperty());
         goodsView.setItems(sortedData);
+        
+        specialisations.getItems().addAll(types);
+        specialisations.setCellFactory(CheckBoxListCell.forListView(new Callback<String, ObservableValue<Boolean>>() {
+        @Override
+        public ObservableValue<Boolean> call(String item) {
+            BooleanProperty observable = new SimpleBooleanProperty();
+            /*if (storesView.getSelectionModel().getSelectedIndex() != -1){
+                List tmp = d.loadStoreTypesList(storesData.get(storesView.getSelectionModel().getSelectedIndex()).getIdStore());
+                observable.setValue(Boolean.FALSE);
+                for (Object tmp1 : tmp)
+                    if (item.equals(tmp1.toString())){
+                        observable.setValue(Boolean.TRUE);
+                        break;
+                    }
+            }*/
+            observable.addListener((obs, wasSelected, isNowSelected) -> 
+                System.out.println("")
+            );
+            return observable ;
+        }
+        }));
+        initCharts();
     }
     
     public void initData(){
@@ -393,6 +410,10 @@ public class FXMLDocumentController implements Initializable {
             if (tmp.getFree() == true) s += ", свободный";
             containersList.getItems().add(s);
         }
+    }
+    
+    public void initCharts(){
+        
     }
     
     public void addGood(){

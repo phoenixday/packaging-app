@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -134,16 +135,6 @@
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
                                                 <BorderPane prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <center>
-                                                      <TableView fx:id="storesView" editable="true" onMousePressed="#add2" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
-                                                        <columns>
-                                                          <TableColumn fx:id="idStore" prefWidth="42.0" text="№" />
-                                                          <TableColumn fx:id="addressStore" onEditCommit="#changeStore" prefWidth="100.0" text="Адрес" />
-                                                            <TableColumn fx:id="sizeStore" onEditCommit="#changeStore" prefWidth="101.0" text="Размер (м2)" />
-                                                            <TableColumn fx:id="universalStore" onEditCommit="#changeStore" prefWidth="75.0" text="Универсальный" />
-                                                        </columns>
-                                                      </TableView>
-                                                   </center>
                                                    <left>
                                                       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
                                                          <children>
@@ -160,12 +151,22 @@
                                                          </padding>
                                                       </VBox>
                                                    </left>
+                                                   <center>
+                                                      <TableView fx:id="storesView" editable="true" onMousePressed="#add2" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                                        <columns>
+                                                          <TableColumn fx:id="idStore" prefWidth="42.0" text="№" visible="false" />
+                                                          <TableColumn fx:id="addressStore" onEditCommit="#changeStore" prefWidth="100.0" text="Адрес" />
+                                                            <TableColumn fx:id="sizeStore" onEditCommit="#changeStore" prefWidth="101.0" text="Размер (м2)" />
+                                                            <TableColumn fx:id="universalStore" onEditCommit="#changeStore" prefWidth="75.0" text="Универсальный" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </center>
                                                    <right>
-                                                      <VBox fx:id="specialisations" prefHeight="200.0" prefWidth="150.0" spacing="5.0" visible="false" BorderPane.alignment="CENTER">
-                                                         <padding>
+                                                      <ListView fx:id="specialisations" editable="true" prefWidth="300.0" BorderPane.alignment="CENTER">
+                                                         <BorderPane.margin>
                                                             <Insets left="5.0" />
-                                                         </padding>
-                                                      </VBox>
+                                                         </BorderPane.margin>
+                                                      </ListView>
                                                    </right>
                                                 </BorderPane>
                                              </children>
@@ -352,6 +353,24 @@
                                  </BorderPane.margin>
                               </TextArea>
                            </center>
+                           <bottom>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </BorderPane.margin>
+                                 <children>
+                                    <PieChart fx:id="pieChart" legendSide="LEFT" title="Занятые и свободные контейнеры" />
+                                    <BarChart fx:id="barChart" legendSide="RIGHT" title="Типы товаров">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </HBox>
+                           </bottom>
                         </BorderPane>
                      </children></AnchorPane>
               </content>

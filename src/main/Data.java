@@ -61,8 +61,8 @@ public class Data implements AutoCloseable{
     
     public List loadStoreTypesList(int idStore){
         session.beginTransaction();
-        Query query = session.createQuery("SELECT t.type FROM Listoftypes l join Types t WHERE l.idStore = :idStore");
-        query.setParameter("l.idStore", idStore);
+        Query query = session.createQuery("SELECT t.type FROM Listoftypes l, Types t WHERE t.idType = l.idType and l.idStore = :id");
+        query.setParameter("id", idStore);
         session.getTransaction().commit();
         return query.list();
     }
@@ -80,7 +80,7 @@ public class Data implements AutoCloseable{
         session.getTransaction().commit();
     }
     
-    public int addContainer(Containers c){ 
+    public int addContainer(Containers c){  
         session.beginTransaction();
         session.save(c);
         session.getTransaction().commit();
@@ -126,5 +126,6 @@ public class Data implements AutoCloseable{
     @Override
     public void close(){
         session.close();
+        HibernateUtil.getSessionFactory().close();
     }
 }
