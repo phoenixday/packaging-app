@@ -36,6 +36,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -399,12 +400,13 @@ public class FXMLDocumentController implements Initializable {
 	while (it.hasNext()) {
             Goods tmp = it.next();
             tmp.setTypeName(types.get(tmp.getType()).toString());
-            int r = h.get(types.get(tmp.getType()).toString());
-            h.put(types.get(tmp.getType()).toString(), r++);
+            int r = h.get(tmp.getTypeName());
+            h.put(tmp.getTypeName(), r++);
             tmp.setContainertypeName(containertypes.get(tmp.getIdContainerType()).toString());
             goodsData.add(tmp);
             gD.add(tmp);
         }
+        System.out.println(h.size());
         initBarChart(h);
         List storesList = d.loadStoresList();
         Iterator<Stores> it2 = storesList.iterator();
@@ -433,11 +435,12 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public void initBarChart(HashMap map){
-        ObservableList<BarChart.Data> barChartData = FXCollections.observableArrayList();
-        //barChartData.addAll(map);
-        for (int i = 0; i < map.size(); i++){
-          //  barChartData.add(map.get(i));
+        XYChart.Series series = new XYChart.Series();
+        for (int i = 0; i < types.size(); i++){
+            series.getData().add(new XYChart.Data(types.get(i).toString(), map.get(types.get(i).toString())));
+            //System.out.println(map.get(types.get(i)));
         }
+        barChart.getData().add(series);
     }
     
     public void addGood(){

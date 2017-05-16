@@ -26,7 +26,7 @@ public class Main extends Application {
         
         Scene scene = new Scene(root);
         
-        stage.setTitle("SimplePack");
+        stage.setTitle("Система разделения грузов в контейнеры");
         stage.setScene(scene);
         stage.show();
         
