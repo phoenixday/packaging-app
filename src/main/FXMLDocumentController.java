@@ -436,10 +436,8 @@ public class FXMLDocumentController implements Initializable {
     
     public void initBarChart(HashMap map){
         XYChart.Series series = new XYChart.Series();
-        for (int i = 0; i < types.size(); i++){
+        for (int i = 0; i < types.size(); i++)
             series.getData().add(new XYChart.Data(types.get(i).toString(), map.get(types.get(i).toString())));
-            //System.out.println(map.get(types.get(i)));
-        }
         barChart.getData().add(series);
     }
     

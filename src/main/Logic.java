@@ -133,7 +133,7 @@ public class Logic {
                         // if the coordinate is empty
                         if (container[i][j][k] == 0){
                             int tmp = 1;
-                            while (tmp <= 6){
+                            while (tmp <= 3){
                                 switch(tmp){
                                     case 1:
                                         elements[number].height = h;
@@ -150,7 +150,7 @@ public class Logic {
                                         elements[number].depth = h;
                                         elements[number].width = w;
                                         break;
-                                    case 4:
+                                    /*case 4:
                                         elements[number].height = d;
                                         elements[number].depth = w;
                                         elements[number].width = h;
@@ -164,7 +164,7 @@ public class Logic {
                                         elements[number].height = w;
                                         elements[number].depth = d;
                                         elements[number].width = h;
-                                        break;
+                                        break;*/
                                 }
                                 boolean fit = true;
                                 // if we place element in this coordinate, does it fit fully?
