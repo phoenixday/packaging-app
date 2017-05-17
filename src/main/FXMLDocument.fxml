@@ -354,18 +354,18 @@
                               </TextArea>
                            </center>
                            <bottom>
-                              <HBox alignment="CENTER" prefHeight="300.0" prefWidth="800.0" spacing="5.0" BorderPane.alignment="CENTER">
+                              <HBox alignment="CENTER" prefHeight="250.0" spacing="5.0" BorderPane.alignment="CENTER">
                                  <BorderPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </BorderPane.margin>
                                  <children>
                                     <PieChart fx:id="pieChart" legendSide="LEFT" title="Занятые и свободные контейнеры" />
-                                    <BarChart fx:id="barChart" legendSide="RIGHT" title="Типы товаров">
+                                    <BarChart fx:id="barChart" legendSide="RIGHT" title="Товары на складах">
                                       <xAxis>
                                         <CategoryAxis label="Склад" side="BOTTOM" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis label="Тип" side="LEFT" />
+                                        <NumberAxis label="Количество" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
                                  </children>

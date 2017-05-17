@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -384,29 +385,30 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public void initData(){
-        HashMap <String, Integer> h = new HashMap();
         List typesList = d.loadTypesList();
         Iterator it3 = typesList.iterator();
 	while (it3.hasNext()) {
             Object tmp = it3.next();
             types.add(tmp);
-            h.put(tmp.toString(), 0);
         }
         List containertypesList = d.loadContainertypesList();
         Iterator it4 = containertypesList.iterator();
 	while (it4.hasNext()) containertypes.add(it4.next());
         List g = d.loadGoodsList();
         Iterator<Goods> it = g.iterator();
+        HashMap <Integer, Integer> h = new HashMap();
 	while (it.hasNext()) {
             Goods tmp = it.next();
             tmp.setTypeName(types.get(tmp.getType()).toString());
-            int r = h.get(tmp.getTypeName());
-            h.put(tmp.getTypeName(), r++);
+            int r = 1;
+            if (h.containsKey(tmp.getIdStore())){
+                r = h.get(tmp.getIdStore()) + 1;
+            }
+            h.put(tmp.getIdStore(), r);
             tmp.setContainertypeName(containertypes.get(tmp.getIdContainerType()).toString());
             goodsData.add(tmp);
             gD.add(tmp);
         }
-        System.out.println(h.size());
         initBarChart(h);
         List storesList = d.loadStoresList();
         Iterator<Stores> it2 = storesList.iterator();
@@ -436,8 +438,10 @@ public class FXMLDocumentController implements Initializable {
     
     public void initBarChart(HashMap map){
         XYChart.Series series = new XYChart.Series();
-        for (int i = 0; i < types.size(); i++)
-            series.getData().add(new XYChart.Data(types.get(i).toString(), map.get(types.get(i).toString())));
+        List<Integer> l = new ArrayList<>(map.keySet());
+        for (int i = 0; i < l.size(); i++){
+            series.getData().add(new XYChart.Data(l.get(i).toString(), map.get(l.get(i))));
+        }
         barChart.getData().add(series);
     }
     
