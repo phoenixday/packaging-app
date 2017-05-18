@@ -34,7 +34,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
@@ -51,12 +53,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.util.Callback;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -592,6 +597,7 @@ public class FXMLDocumentController implements Initializable {
     
     public void exportGoods() throws FileNotFoundException, IOException{
         JFileChooser fileopen = new JFileChooser();
+        fileopen.setFileFilter(new FileNameExtensionFilter("XLS files", "xls"));
         int ret = fileopen.showDialog(null, "Сохранить файл");
         if (ret == JFileChooser.APPROVE_OPTION){
             File file = fileopen.getSelectedFile();
@@ -605,6 +611,7 @@ public class FXMLDocumentController implements Initializable {
     
     public void exportStores() throws FileNotFoundException, IOException{
         JFileChooser fileopen = new JFileChooser();
+        fileopen.setFileFilter(new FileNameExtensionFilter("XLS files", "xls"));
         int ret = fileopen.showDialog(null, "Сохранить файл");
         if (ret == JFileChooser.APPROVE_OPTION){
             File file = fileopen.getSelectedFile();
@@ -618,6 +625,7 @@ public class FXMLDocumentController implements Initializable {
     
     public void exportAll() throws FileNotFoundException, IOException{
         JFileChooser fileopen = new JFileChooser();
+        fileopen.setFileFilter(new FileNameExtensionFilter("XLS files", "xls"));
         int ret = fileopen.showDialog(null, "Сохранить файл");
         if (ret == JFileChooser.APPROVE_OPTION){
             File file = fileopen.getSelectedFile();
@@ -876,5 +884,18 @@ public class FXMLDocumentController implements Initializable {
         link3.setVisited(true);
         text.setText(link3.getText() + "\n\n");
         text.appendText("Контейнер — основная единица перевозки или хранения, используемая в транспортной логистике. Контейнеры изготавливают из различных материалов и форм, однако наибольшее распространение получили универсальные контейнеры.");
+    }
+    
+    public void makeSnapshot() throws IOException{
+        WritableImage image = group.snapshot(new SnapshotParameters(), null);
+        JFileChooser fileopen = new JFileChooser();
+        fileopen.setFileFilter(new FileNameExtensionFilter("Images", "png"));
+        int ret = fileopen.showDialog(null, "Сохранить файл");
+        if (ret == JFileChooser.APPROVE_OPTION){
+            File file = fileopen.getSelectedFile();
+            //if (!fileopen.getSelectedFile().getName().contains(".png"))
+              //  file.renameTo(new File(file.getName().concat(".png")));
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+        }
     }
 }

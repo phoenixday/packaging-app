@@ -297,6 +297,9 @@
                                              <BorderPane.margin>
                                                 <Insets bottom="10.0" />
                                              </BorderPane.margin>
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#makeSnapshot" text="Сохранить картинку" />
+                                             </children>
                                           </FlowPane>
                                        </top>
                                        <bottom>
