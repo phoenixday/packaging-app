@@ -150,12 +150,12 @@ public class Logic {
                                         elements[number].depth = h;
                                         elements[number].width = w;
                                         break;
-                                    /*case 4:
+                                    case 4:
                                         elements[number].height = d;
                                         elements[number].depth = w;
                                         elements[number].width = h;
                                         break;
-                                    case 5:
+                                    /*case 5:
                                         elements[number].height = w;
                                         elements[number].depth = h;
                                         elements[number].width = d;

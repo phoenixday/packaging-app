@@ -295,6 +295,8 @@ public class FXMLDocumentController implements Initializable {
                 checkBox.selectedProperty().setValue(s.getUniversal());
                 checkBox.selectedProperty().addListener((ov, old_val, new_val) -> {
                     s.setUniversal(new_val);
+                    if (new_val) specialisations.setVisible(false);
+                    else specialisations.setVisible(true);
                     d.updateStore(s);
                 });
                 return new SimpleObjectProperty(checkBox);
@@ -639,7 +641,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public void parseGoods(Workbook book){
-        Sheet sheet = book.createSheet("Goods");
+        Sheet sheet = book.createSheet("Товары");
         for(int i = 0; i < goodsData.size(); i++){
             Row row = sheet.createRow(i);
             row.createCell(0).setCellValue(goodsData.get(i).getIdGood());
@@ -656,7 +658,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public void parseStores(Workbook book){
-        Sheet sheet = book.createSheet("Stores");
+        Sheet sheet = book.createSheet("Склады");
         for(int i = 0; i < storesData.size(); i++){
             Row row = sheet.createRow(i);
             row.createCell(0).setCellValue(storesData.get(i).getIdStore());
@@ -760,6 +762,7 @@ public class FXMLDocumentController implements Initializable {
         Logic logic = new Logic();
         logic.start(goodsList.getItems());
         drawPane.setVisible(true);
+        group.setVisible(true);
         group.getChildren().clear();
         Box box = new Box(300, 300, 300);
         box.setDrawMode(DrawMode.LINE);

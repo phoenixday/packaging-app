@@ -31,7 +31,7 @@
                                                    <center>
                                                       <TableView fx:id="goodsView" editable="true" focusTraversable="false" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
                                                          <columns>
-                                                            <TableColumn fx:id="idGood" editable="false" prefWidth="48.0" text="№" />
+                                                            <TableColumn fx:id="idGood" editable="false" prefWidth="40.0" text="№" />
                                                             <TableColumn fx:id="nameGood" onEditCommit="#changeGood" prefWidth="240.0" text="Наименование" />
                                                             <TableColumn fx:id="typeGood" onEditCommit="#changeGood" prefWidth="177.0" text="Тип" />
                                                             <TableColumn fx:id="countGood" onEditCommit="#changeGood" prefWidth="78.0" text="Количество" />
@@ -43,9 +43,6 @@
                                                             <TableColumn fx:id="containertypeGood" onEditCommit="#changeGood" prefWidth="117.0" text="Тип контейнера" />
                                                             <TableColumn fx:id="expirationdateGood" onEditCommit="#changeGood" prefWidth="102.0" text="Срок годности" />
                                                          </columns>
-                                                         <columnResizePolicy>
-                                                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                         </columnResizePolicy>
                                                       </TableView>
                                                    </center>
                                                    <right>
@@ -162,7 +159,7 @@
                                                       </TableView>
                                                    </center>
                                                    <right>
-                                                      <ListView fx:id="specialisations" editable="true" prefWidth="300.0" BorderPane.alignment="CENTER">
+                                                      <ListView fx:id="specialisations" editable="true" prefWidth="300.0" visible="false" BorderPane.alignment="CENTER">
                                                          <BorderPane.margin>
                                                             <Insets left="5.0" />
                                                          </BorderPane.margin>
@@ -313,7 +310,7 @@
                                           </HBox>
                                        </bottom>
                                        <center>
-                                          <Group fx:id="group" BorderPane.alignment="CENTER">
+                                          <Group fx:id="group" visible="false" BorderPane.alignment="CENTER">
                                              <children>
                                                 <Box fx:id="container" depth="300.0" drawMode="LINE" height="300.0" width="300.0" />
                                              </children>
