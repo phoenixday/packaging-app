@@ -383,9 +383,17 @@ public class FXMLDocumentController implements Initializable {
                         break;
                     }
             }*/
-            observable.addListener((obs, wasSelected, isNowSelected) -> 
-                System.out.println("")
-            );
+            
+            observable.addListener((obs, wasSelected, isNowSelected) ->{
+                if (isNowSelected)
+                    for (int i = 0; i < types.size(); i++)
+                        if (types.get(i) == item)
+                            System.out.println(i + "true");
+                if (!isNowSelected)
+                    for (int i = 0; i < types.size(); i++)
+                        if (types.get(i) == item)
+                            System.out.println(i + "false");
+            });
             return observable ;
         }
         }));

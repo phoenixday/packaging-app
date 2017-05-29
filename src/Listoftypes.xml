@@ -52,6 +52,7 @@ Contributor(s):
         </id>
         
         <property name="idType" type="int" column="idType"/>
+        <property name="idStore" type="int" column="idStore"/>
         
     </class>
 
