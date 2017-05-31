@@ -360,7 +360,7 @@
                                  </BorderPane.margin>
                                  <children>
                                     <PieChart fx:id="pieChart" legendSide="LEFT" title="Занятые и свободные контейнеры" />
-                                    <BarChart fx:id="barChart" legendSide="RIGHT" title="Товары на складах">
+                                    <BarChart fx:id="barChart" legendSide="RIGHT" legendVisible="false" title="Товары на складах">
                                       <xAxis>
                                         <CategoryAxis label="Склад" side="BOTTOM" />
                                       </xAxis>

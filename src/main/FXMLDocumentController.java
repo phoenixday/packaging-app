@@ -286,6 +286,7 @@ public class FXMLDocumentController implements Initializable {
         addressStore.setCellFactory(TextFieldTableCell.<Stores>forTableColumn());
         sizeStore.setCellValueFactory(new PropertyValueFactory<>("size"));
         sizeStore.setCellFactory(ComboBoxTableCell.forTableColumn(sizes));
+        int l;
         universalStore.setCellValueFactory(
             new Callback<CellDataFeatures<Stores, Boolean>, ObservableValue<Boolean>>(){
             @Override
@@ -295,6 +296,7 @@ public class FXMLDocumentController implements Initializable {
                 checkBox.selectedProperty().setValue(s.getUniversal());
                 checkBox.selectedProperty().addListener((ov, old_val, new_val) -> {
                     s.setUniversal(new_val);
+                    final int p = s.getIdStore();
                     if (new_val) specialisations.setVisible(false);
                     else specialisations.setVisible(true);
                     d.updateStore(s);
@@ -370,32 +372,23 @@ public class FXMLDocumentController implements Initializable {
         goodsView.setItems(sortedData);
         
         specialisations.getItems().addAll(types);
-        specialisations.setCellFactory(CheckBoxListCell.forListView(new Callback<String, ObservableValue<Boolean>>() {
-        @Override
-        public ObservableValue<Boolean> call(String item) {
-            BooleanProperty observable = new SimpleBooleanProperty();
-            /*if (storesView.getSelectionModel().getSelectedIndex() != -1){
-                List tmp = d.loadStoreTypesList(storesData.get(storesView.getSelectionModel().getSelectedIndex()).getIdStore());
-                observable.setValue(Boolean.FALSE);
-                for (Object tmp1 : tmp)
-                    if (item.equals(tmp1.toString())){
-                        observable.setValue(Boolean.TRUE);
-                        break;
-                    }
-            }*/
-            
-            observable.addListener((obs, wasSelected, isNowSelected) ->{
-                if (isNowSelected)
-                    for (int i = 0; i < types.size(); i++)
-                        if (types.get(i) == item)
-                            System.out.println(i + "true");
-                if (!isNowSelected)
-                    for (int i = 0; i < types.size(); i++)
-                        if (types.get(i) == item)
-                            System.out.println(i + "false");
-            });
-            return observable ;
-        }
+        specialisations.setCellFactory(CheckBoxListCell.forListView(
+            new Callback<String, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(String item) {
+                BooleanProperty observable = new SimpleBooleanProperty();
+                observable.addListener((obs, wasSelected, isNowSelected) ->{
+                    if (isNowSelected)
+                        for (int i = 0; i < types.size(); i++)
+                            if (types.get(i) == item)
+                                System.out.println(i + "true");
+                    if (!isNowSelected)
+                        for (int i = 0; i < types.size(); i++)
+                            if (types.get(i) == item)
+                                System.out.println(i + "false");
+                });
+                return observable ;
+            }
         }));
     }
     
