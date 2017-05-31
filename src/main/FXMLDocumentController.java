@@ -473,7 +473,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public void addStore(){
-        Stores s = new Stores(storesData.size() + 1, "", 600, true, 0);
+        Stores s = new Stores(storesData.size() + 1, "", 600, true);
         storesData.add(s);
         d.addStore(s);
     }

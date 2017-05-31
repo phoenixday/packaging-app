@@ -53,7 +53,6 @@ Contributor(s):
         <property name="address" type="string" column="address"/>
         <property name="size" type="int" column="size"/>
         <property name="universal" type="boolean" column="universal"/>
-        <property name="idListoftypes" type="int" column="idListoftypes"/>
         
     </class>
 </hibernate-mapping>

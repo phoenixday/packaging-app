@@ -14,26 +14,22 @@ public class Stores {
     private String address;
     private int size;
     private boolean universal;
-    private Integer idListoftypes;
     
     public Stores(){}
-    public Stores(int idStore, String address, int size, boolean universal, int idListoftypes){
+    public Stores(int idStore, String address, int size, boolean universal){
         this.idStore = idStore;
         this.address = address;
         this.size = size;
         this.universal = universal;
-        this.idListoftypes = idListoftypes;
     }
     
     public int getIdStore(){ return this.idStore; }
     public String getAddress(){ return this.address; }
     public int getSize(){ return this.size; }
     public boolean getUniversal(){ return this.universal; }
-    public Integer getIdListoftypes(){ return this.idListoftypes; }
     
     public void setIdStore(int idStore){ this.idStore = idStore; }
     public void setAddress(String address){ this.address = address; }
     public void setSize(int size){ this.size = size; }
     public void setUniversal(boolean universal){ this.universal = universal; }
-    public void setIdListoftypes(Integer idListoftypes){ this.idListoftypes = idListoftypes; }
 }
