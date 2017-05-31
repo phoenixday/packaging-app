@@ -687,8 +687,10 @@ public class FXMLDocumentController implements Initializable {
     public void add(){
         if (goodsView3.getSelectionModel().getSelectedIndex() == -1) return;
         if (Integer.valueOf(count.getText()) < 1 ||
-            Integer.valueOf(count.getText()) > gD.get(goodsView3.getSelectionModel().getSelectedIndex()).getCount())
+            Integer.valueOf(count.getText()) > gD.get(goodsView3.getSelectionModel().getSelectedIndex()).getCount()){
+            AlertBox.display("Ошибка!", "Неверные данные. ");
             return;
+        }
         Goods tmp = gD.get(goodsView3.getSelectionModel().getSelectedIndex());
         goodsList.getItems().add(tmp.getName() + ", " + count.getText() + " шт., " 
                 + tmp.getMass() + " кг, " + tmp.getWidth() + "x" + tmp.getLength() 
