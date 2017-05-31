@@ -446,8 +446,8 @@ public class FXMLDocumentController implements Initializable {
     
     public void initPieChart(int free, int full){
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Свободные", free),
-                new PieChart.Data("Занятые", full));
+                new PieChart.Data("Свободные - " + free, free),
+                new PieChart.Data("Занятые - " + full, full));
         pieChart.setData(pieChartData);
     }
     
