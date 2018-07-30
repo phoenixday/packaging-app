@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FXMLDocumentController">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Склад">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" stylesheets="@styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <Accordion prefWidth="600.0" BorderPane.alignment="CENTER">
+                                <panes>
+                                  <TitledPane animated="false" text="Товары">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <BorderPane layoutX="14.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="28.80000000000001" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.799999999999955" AnchorPane.topAnchor="0.0">
+                                                   <center>
+                                                      <TableView fx:id="goodsView" editable="true" focusTraversable="false" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                                         <columns>
+                                                            <TableColumn fx:id="idGood" editable="false" prefWidth="40.0" text="№" />
+                                                            <TableColumn fx:id="nameGood" onEditCommit="#changeGood" prefWidth="240.0" text="Наименование" />
+                                                            <TableColumn fx:id="typeGood" onEditCommit="#changeGood" prefWidth="177.0" text="Тип" />
+                                                            <TableColumn fx:id="countGood" onEditCommit="#changeGood" prefWidth="78.0" text="Количество" />
+                                                            <TableColumn fx:id="idStoreGood" onEditCommit="#changeGood" prefWidth="99.0" text="Номер склада" />
+                                                            <TableColumn fx:id="massGood" onEditCommit="#changeGood" prefWidth="61.0" text="Масса, кг" />
+                                                            <TableColumn fx:id="widthGood" onEditCommit="#changeGood" prefWidth="61.0" text="Ширина, мм" />
+                                                            <TableColumn fx:id="lengthGood" onEditCommit="#changeGood" prefWidth="61.0" text="Длина, мм" />
+                                                            <TableColumn fx:id="heightGood" onEditCommit="#changeGood" prefWidth="61.0" text="Высота, мм" />
+                                                            <TableColumn fx:id="containertypeGood" onEditCommit="#changeGood" prefWidth="117.0" text="Тип контейнера" />
+                                                            <TableColumn fx:id="expirationdateGood" onEditCommit="#changeGood" prefWidth="102.0" text="Срок годности" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </center>
+                                                   <right>
+                                                      <VBox prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                         <children>
+                                                            <TextField fx:id="searchField" promptText="Найти" />
+                                                            <TextArea disable="true" editable="false" maxHeight="-Infinity" opacity="0.0" prefHeight="80.0" prefWidth="200.0" promptText="Дополнительная характеристика">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="30.0" top="10.0" />
+                                                               </VBox.margin>
+                                                            </TextArea>
+                                                            <Button fx:id="addGood" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addGood" text="Добавить">
+                                                               <VBox.margin>
+                                                                  <Insets />
+                                                               </VBox.margin>
+                                                            </Button>
+                                                            <Button fx:id="deleteGood" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteGood" text="Удалить" />
+                                                            <Button fx:id="exportGoods" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportGoods" text="Экспорт в Excel" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="5.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                   </right>
+                                                </BorderPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Контейнеры">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <left>
+                                                      <VBox prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                         <children>
+                                                            <ChoiceBox fx:id="containertypescombo" prefWidth="150.0">
+                                                               <VBox.margin>
+                                                                  <Insets />
+                                                               </VBox.margin>
+                                                            </ChoiceBox>
+                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addContainer" text="Добавить">
+                                                               <VBox.margin>
+                                                                  <Insets />
+                                                               </VBox.margin>
+                                                            </Button>
+                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteContainer" text="Удалить">
+                                                               <VBox.margin>
+                                                                  <Insets />
+                                                               </VBox.margin>
+                                                            </Button>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets right="5.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                   </left>
+                                                   <center>
+                                                      <GridPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <ListView fx:id="containersList" onMouseClicked="#getGoods" prefHeight="200.0" prefWidth="200.0" />
+                                                            <TableView fx:id="goodsView2" focusTraversable="false" tableMenuButtonVisible="true" GridPane.columnIndex="1">
+                                                               <columns>
+                                                                  <TableColumn fx:id="idGood2" prefWidth="75.0" text="№" />
+                                                                  <TableColumn fx:id="nameGood2" editable="false" prefWidth="75.0" text="Наименование" />
+                                                                  <TableColumn fx:id="countGood2" editable="false" prefWidth="75.0" text="Количество" />
+                                                               </columns>
+                                                            </TableView>
+                                                         </children>
+                                                      </GridPane>
+                                                   </center>
+                                                </BorderPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Склады">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <BorderPane prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <left>
+                                                      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                         <children>
+                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addStore" text="Добавить">
+                                                               <VBox.margin>
+                                                                  <Insets />
+                                                               </VBox.margin>
+                                                            </Button>
+                                                            <Button fx:id="deleteStore" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteStore" text="Удалить" />
+                                                            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportStores" text="Экспорт в Excel" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets right="5.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                   </left>
+                                                   <center>
+                                                      <TableView fx:id="storesView" editable="true" onMousePressed="#add2" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                                        <columns>
+                                                          <TableColumn fx:id="idStore" prefWidth="42.0" text="№" />
+                                                          <TableColumn fx:id="addressStore" onEditCommit="#changeStore" prefWidth="100.0" text="Адрес" />
+                                                            <TableColumn fx:id="sizeStore" onEditCommit="#changeStore" prefWidth="101.0" text="Размер (м2)" />
+                                                            <TableColumn fx:id="universalStore" onEditCommit="#changeStore" prefWidth="75.0" text="Универсальный" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </center>
+                                                   <right>
+                                                      <ListView fx:id="specialisations" editable="true" prefWidth="300.0" visible="false" BorderPane.alignment="CENTER">
+                                                         <BorderPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </BorderPane.margin>
+                                                      </ListView>
+                                                   </right>
+                                                </BorderPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                </panes>
+                              </Accordion>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Упаковать">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.6003344481605352" prefHeight="355.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <GridPane vgap="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                             <top>
+                                                <Label text="1. Добавьте товары" BorderPane.alignment="CENTER" />
+                                             </top>
+                                             <center>
+                                                <GridPane hgap="5.0" BorderPane.alignment="CENTER">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="108.0" spacing="5.0" GridPane.columnIndex="1">
+                                                         <children>
+                                                            <TextField fx:id="count" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Количество" />
+                                                            <ChoiceBox fx:id="colour" prefWidth="150.0" />
+                                                            <Button fx:id="add" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#add" text="Добавить" />
+                                                            <Button fx:id="delete" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#delete" text="Удалить" />
+                                                         </children>
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin>
+                                                      </VBox>
+                                                      <TableView fx:id="goodsView3" focusTraversable="false" onMouseClicked="#showCount" tableMenuButtonVisible="true">
+                                                         <columns>
+                                                            <TableColumn fx:id="idGood3" prefWidth="75.0" text="№" />
+                                                            <TableColumn fx:id="nameGood3" prefWidth="75.0" text="Наименование" />
+                                                            <TableColumn fx:id="typeGood3" prefWidth="75.0" text="Тип" />
+                                                            <TableColumn fx:id="countGood3" prefWidth="75.0" text="Количество" />
+                                                            <TableColumn fx:id="idStoreGood3" prefWidth="75.0" text="Номер склада" />
+                                                            <TableColumn fx:id="massGood3" prefWidth="75.0" text="Масса, кг" />
+                                                            <TableColumn fx:id="widthGood3" prefWidth="75.0" text="Ширина, мм" />
+                                                            <TableColumn fx:id="lengthGood3" prefWidth="75.0" text="Длина, мм" />
+                                                            <TableColumn fx:id="heightGood3" prefWidth="75.0" text="Высота, мм" />
+                                                            <TableColumn fx:id="containertypeGood3" prefWidth="75.0" text="Тип контейнера" />
+                                                            <TableColumn fx:id="expirationdateGood3" prefWidth="75.0" text="Срок годности" />
+                                                         </columns>
+                                                      </TableView>
+                                                      <ListView fx:id="goodsList" onMouseClicked="#change" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                             </center>
+                                          </BorderPane>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                             <top>
+                                                <Label text="2. Добавьте контейнеры" BorderPane.alignment="CENTER">
+                                                   <BorderPane.margin>
+                                                      <Insets bottom="5.0" />
+                                                   </BorderPane.margin>
+                                                </Label>
+                                             </top>
+                                             <center>
+                                                <ListView fx:id="containersList2" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                             </center>
+                                             <left>
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <CheckBox fx:id="choice" mnemonicParsing="false" onAction="#autoadd" selected="true" text="Автовыбор" />
+                                                      <ComboBox fx:id="containerscombo" disable="true" prefWidth="150.0" />
+                                                      <Button fx:id="add2" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#add2" text="Добавить" />
+                                                      <Button fx:id="delete2" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#delete2" text="Удалить" />
+                                                   </children>
+                                                   <BorderPane.margin>
+                                                      <Insets right="5.0" />
+                                                   </BorderPane.margin>
+                                                </VBox>
+                                             </left>
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin>
+                                             <bottom>
+                                                <Button mnemonicParsing="false" onAction="#calculate" style="-fx-background-radius: 10;" text="Рассчитать" BorderPane.alignment="CENTER">
+                                                   <BorderPane.margin>
+                                                      <Insets top="30.0" />
+                                                   </BorderPane.margin>
+                                                </Button>
+                                             </bottom>
+                                          </BorderPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane fx:id="drawPane" minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0" visible="false">
+                                 <children>
+                                    <BorderPane prefHeight="1000.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                       </padding>
+                                       <top>
+                                          <FlowPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets bottom="10.0" />
+                                             </BorderPane.margin>
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#makeSnapshot" text="Сохранить картинку" />
+                                             </children>
+                                          </FlowPane>
+                                       </top>
+                                       <bottom>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                             <children>
+                                                <Label text="X: " />
+                                                <Slider fx:id="sliderX" onMouseEntered="#clickX" />
+                                                <Label text="Y: " />
+                                                <Slider fx:id="sliderY" onMouseEntered="#clickY" />
+                                             </children>
+                                          </HBox>
+                                       </bottom>
+                                       <center>
+                                          <Group fx:id="group" visible="false" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <Box fx:id="container" depth="300.0" drawMode="LINE" height="300.0" width="300.0" />
+                                             </children>
+                                          </Group>
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Дополнительно">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <left>
+                              <VBox maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Hyperlink fx:id="link1" onAction="#setText" text="О программе" />
+                                    <Hyperlink fx:id="link2" onAction="#setText2" text="Типы товаров" />
+                                    <Hyperlink fx:id="link3" onAction="#setText3" text="Контейнеры" />
+                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exportAll" text="Экспорт таблиц в Excel">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </left>
+                           <center>
+                              <TextArea fx:id="text" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" />
+                                 </BorderPane.margin>
+                              </TextArea>
+                           </center>
+                           <bottom>
+                              <HBox alignment="CENTER" prefHeight="250.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </BorderPane.margin>
+                                 <children>
+                                    <PieChart fx:id="pieChart" legendSide="LEFT" title="Занятые и свободные контейнеры" />
+                                    <BarChart fx:id="barChart" legendSide="RIGHT" legendVisible="false" title="Товары на складах">
+                                      <xAxis>
+                                        <CategoryAxis label="Склад" side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis label="Количество" side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </HBox>
+                           </bottom>
+                        </BorderPane>
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
